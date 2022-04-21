@@ -6,10 +6,10 @@
       = {{result}}
     </div>
     <div class="keyboard">
-      <button @click="result = +operand1 + +operand2">+</button> //+ для преобразования из строки в число. я не понял почему здесь это требуется а в двух последних кнопках нет
-      <button @click="result = +operand1 - +operand2">-</button>//+ для преобразования из строки в число. я не понял почему здесь это требуется а в двух последних кнопках нет
-      <button @click="result = +operand1 / +operand2">/</button>//+ для преобразования из строки в число. я не понял почему здесь это требуется а в двух последних кнопках нет
-      <button @click="result = +operand1 * +operand2">*</button>//+ для преобразования из строки в число. я не понял почему здесь это требуется а в двух последних кнопках нет
+      <button @click="result = +operand1 + +operand2">+</button> 
+      <button @click="result = +operand1 - +operand2">-</button>
+      <button @click="result = +operand1 / +operand2">/</button>
+      <button @click="result = +operand1 * +operand2">*</button>
       <button @click="result = operand1 ** operand2">Возведение в степень</button>
       <button @click="result = (operand1 / operand2) >> 0 ">Целочисленное деление</button>
 

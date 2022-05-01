@@ -14,7 +14,7 @@
       </button>
       <div v-show="error">Ошибка! {{ error }}</div>
       <div class="strange-message">
-        <template v-if="result < 0">Получилось отрицательное число</template>
+        <template v-if="result < 0">Получилось отрицательное число!</template>
         <template v-else-if="result < 100">Результат в первой сотне</template>
         <template v-else>Получилось слишком большое число</template>
       </div>

@@ -2,56 +2,64 @@
   <div class="home">
     <header>
       <div class="title">My personal costs</div>
+      <div >Total price = {{getFullPaymentValue}}</div>
     </header>
     <main>
-      <PaymentsDisplay :items="paymentsList"/>
-      <button class="showForm" @click="show=!show">Добавить запись</button>
-      <AddPaymentForm  v-show="!show" @addNewPayment="addPaymentData"/>
+      <button class="showForm" @click="show = !show">Добавить запись</button>
+      <AddPaymentForm v-show="!show" @addNewPayment="addPaymentData" />
+      <PaymentsDisplay :items="currentElements" />
+      <MyPagination :cur="cur" :length="getPaymentsList.length" :n="n" @changePage="changePage" />
     </main>
   </div>
 </template>
 
 <script>
 import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
-import AddPaymentForm from "@/components/AddPaymentForm";
+import AddPaymentForm from "@/components/AddPaymentForm.vue";
+import {mapMutations, mapGetters} from "vuex"
+import MyPagination from "@/components/MyPagination";
+
 export default {
   name: "HomeView",
   components: {
     AddPaymentForm,
     PaymentsDisplay,
+    MyPagination,
   },
-  data(){
-    return{
-      paymentsList:[],
+  data() {
+    return {
+      cur: 1,
+      n: 10,
       show: true,
     };
+
   },
-  methods:{
+  computed: {
+    ...mapGetters(['getFullPaymentValue', 'getPaymentsList']),
+    currentElements(){
+      return this.getPaymentsList.slice(this.n*(this.cur -1), this.n*(this.cur-1)+this.n)
+    }
+
+  },
+
+  methods: {
+    ...mapMutations({
+      MyMutation: 'setPaymentsListData',
+    }),
     addPaymentData(data) {
-      this.paymentsList.push(data)
+      this.paymentsList.push(data);
     },
-    fetchData(){
-      return[
-        {
-          date: "28.03.2020",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Transport",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Food",
-          value: 532,
-        },
-      ];
-    },
+    changePage(p){
+      this.cur = p
+      this.$store.dispatch('fetchData', p)
+    }
   },
-  created() {
-    this.paymentsList = this.fetchData()
+  async created() {
+    await this.$store.dispatch('fetchData', this.cur)
+
+  },
+  mounted() {
+
   },
 };
 </script>

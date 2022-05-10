@@ -12,15 +12,8 @@ export default {
   props: {
     items: {
       type: Array,
-      default: () => [],
-      validator: function (value) {
-        if(!Array.isArray(value)){
-          alert('ALARM')
-          return
-        }
-        return ['success', 'warning', 'danger'].includes(value)
+      default: ()=>[]
       }
     }
   }
-}
 </script>

@@ -1,8 +1,10 @@
 <template>
   <div class="form-wrapper">
     <input v-model="date" placeholder="Дата">
-    <input v-model="category" placeholder="Категория"/>
-    <input v-model="value" placeholder="Сумма"/>
+    <select v-model="category" v-if="categoryList" >
+      <option v-for="(value,idx) in categoryList" :key="idx" >{{value}}</option>
+    </select>
+    <input v-model.number="value" placeholder="Сумма"/>
     <button @click="onClickSave">Сохранить</button>
   </div>
 </template>
@@ -20,15 +22,14 @@
       getCurrentDate() {
         const today = new Date()
         const formater = new Intl.DateTimeFormat("ru",{
-
           year: "numeric",
           month: "long",
           day: "numeric"
         });
-       /* const d = today.getDate()
-        const m = today.getMonth() + 1
-        const y = today.getFullYear()*/
         return formater.format(today)
+      },
+      categoryList(){
+        return this.$store.getters.getCategoryList
       }
     },
     methods: {
@@ -38,9 +39,13 @@
           category: this.category,
           value: this.value
         }
-        this.$emit('addNewPayment', data)
-        console.log(data);
+        this.$store.commit('addDataToPaymentsList', data)
       }
     },
+    async created() {
+      await this.$store.dispatch('fetchCategoryList')
+    },
+    mounted() {
+    }
   }
 </script>

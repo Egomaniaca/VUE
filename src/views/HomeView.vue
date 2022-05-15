@@ -16,7 +16,7 @@
 <script>
 import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
 import AddPaymentForm from "@/components/AddPaymentForm.vue";
-import {mapMutations, mapGetters} from "vuex"
+import {mapMutations, mapGetters} from "vuex";
 import MyPagination from "@/components/MyPagination";
 
 export default {
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       cur: 1,
-      n: 10,
+      n: 5,
       show: true,
     };
 
@@ -47,19 +47,20 @@ export default {
       MyMutation: 'setPaymentsListData',
     }),
     addPaymentData(data) {
-      this.paymentsList.push(data);
+      this.paymentsList.push(data)
     },
     changePage(p){
       this.cur = p
-      this.$store.dispatch('fetchData', p)
+
     }
   },
-  async created() {
-    await this.$store.dispatch('fetchData', this.cur)
+  created() {
+    this.$store.dispatch('fetchData')
 
   },
   mounted() {
-
+    if(!this.$route.params?.page || isNaN(this.$route.params.page)) return
+    this.cur = Number(this.$route.params.page)
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <input v-model="date" placeholder="Дата">
+    <input v-model="date" placeholder="Дата"/>
     <select v-model="category" v-if="categoryList" >
       <option v-for="(value,idx) in categoryList" :key="idx" >{{value}}</option>
     </select>
@@ -11,11 +11,11 @@
 <script>
   export default {
     name: "AddPaymentForm",
-    date() {
+    data() {
       return {
         date: "",
         category: "",
-        value: ""
+        value: "0"
       }
     },
     computed: {
@@ -40,12 +40,27 @@
           value: this.value
         }
         this.$store.commit('addDataToPaymentsList', data)
-      }
+        console.log(data)
+      },
+
     },
+
     async created() {
       await this.$store.dispatch('fetchCategoryList')
     },
     mounted() {
+      const {category, section} = this.$route.params
+      if(!category || !section) {
+        return
+      }
+      this.category = category
+      const {value} = this.$route.query
+      if(!value) return
+      this.value = value
+      if(this.value && this.category) {
+        this.onClickSave()
+      }
     }
   }
+
 </script>

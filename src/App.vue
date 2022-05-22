@@ -6,22 +6,67 @@
       <router-link to="/notFound">Not Found</router-link>
     </nav>
 
+    <ModalWindowAddPaymentForm :settings="settings" v-if="modalShow"/>
+
     <img alt="politCat" src="./assets/politcat.png">
     <router-view/>
+    <Transition
+        name="custom-classes"
+        enter-active-class="animate__animated animate__tada"
+        leave-active-class="animate__animated animate__bounceOutRight"
+    >
+     <ModalWindowAddPaymentForm :settings="settings"  v-if="modalShow"/>
+    </Transition>
+    <Transition
+        name="custom-classes"
+        enter-active-class="animate__animated animate__tada"
+        leave-active-class="animate__animated animate__bounceOutRight"
+    >
+      <ContextMenu/>
+    </Transition>
   </div>
 </template>
 
 <script>
 
 
-export default {
-  name: 'App',
-  components: {
-    
-  },
-  methods:{
 
-  }
+import ContextMenu from "@/components/ContextMenu";
+export default {
+  data(){
+    return {
+      modalShow: false,
+      settings: {}
+    }
+  },
+  name: 'App',
+
+  methods:{
+    onShow(data){
+      this.modalShow = true
+      this.settings = data
+      console.log(data)
+    },
+    onHide(){
+      this.settings = {}
+        this.modalShow = false
+
+    }
+
+
+  },
+  mounted() {
+    this.$modal.EventBus.$on('show',this.onShow)
+    this.$modal.EventBus.$on('hide',this.onHide)
+  },
+  beforeDestroy() {
+    this.$modal.EventBus.$off('show',this.onShow)
+    this.$modal.EventBus.$off('hide',this.onHide)
+  },
+  components: {
+    ContextMenu,
+    ModalWindowAddPaymentForm:()=> import('./components/ModalWindowAddPaymentForm')
+  },
 }
 </script>
 
@@ -46,4 +91,6 @@ nav {
     }
   }
 }
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+
 </style>

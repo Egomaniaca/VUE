@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import AddPaymentForm from "@/components/AddPaymentForm";
 
 
+
+
 Vue.use(Router)
 
 const routes =[

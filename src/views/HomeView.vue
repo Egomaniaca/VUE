@@ -5,8 +5,15 @@
       <div >Total price = {{getFullPaymentValue}}</div>
     </header>
     <main>
-      <button class="showForm" @click="show = !show">Добавить запись</button>
-      <AddPaymentForm v-show="!show" @addNewPayment="addPaymentData" />
+      <router-link :to="{name: 'AddPaymentForm', params: {section: 'Payment', category: 'Food',},query:{value: 500}}"> Food 500</router-link> <br>
+      <router-link :to="{name: 'AddPaymentForm', params: {section: 'Payment', category: 'Food',},query:{value: 100}}"> Food 100</router-link> <br>
+      <router-link :to="{name: 'AddPaymentForm', params: {section: 'Payment', category: 'Education',},query:{value: 400}}"> Education 400</router-link><br>
+      <router-link :to="{name: 'AddPaymentForm', params: {section: 'Payment', category: 'Education',},query:{value: 300}}"> Education 300</router-link><br>
+      <router-link :to="{name: 'AddPaymentForm', params: {section: 'Payment', category: 'Transport',},query:{value: 50}}"> Transport 50</router-link><br>
+
+
+
+      <button @click="openModalForm">Show</button>
       <PaymentsDisplay :items="currentElements" />
       <MyPagination :cur="cur" :length="getPaymentsList.length" :n="n" @changePage="changePage" />
     </main>
@@ -15,14 +22,14 @@
 
 <script>
 import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
-import AddPaymentForm from "@/components/AddPaymentForm.vue";
+
 import {mapMutations, mapGetters} from "vuex";
 import MyPagination from "@/components/MyPagination";
+
 
 export default {
   name: "HomeView",
   components: {
-    AddPaymentForm,
     PaymentsDisplay,
     MyPagination,
   },
@@ -51,7 +58,9 @@ export default {
     },
     changePage(p){
       this.cur = p
-
+    },
+    openModalForm(){
+      this.$modal.show('addform', {title: "AddNewPayment", component: 'AddPaymentForm'})
     }
   },
   created() {
